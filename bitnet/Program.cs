@@ -10,12 +10,14 @@ namespace bitnet
     {
         static void Main(string[] args)
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-            Console.WriteLine("Hello World!");
-            Console.ReadKey();
-
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+            var read = new ReadTumblr();
+            Console.WriteLine("Getting Html");
+            //var content = "<div class=\"body-text\">\n<p>yasss</p>\n</div>";
+            var content = read.ReadContent();
+            Console.WriteLine(content);
+            Console.WriteLine("\nGetting divs");
+            read.SearchForPost(content);
+            Console.ReadLine();
         }
     }
 }
