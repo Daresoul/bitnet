@@ -11,12 +11,18 @@ namespace bitnet
         static void Main(string[] args)
         {
             var read = new ReadTumblr();
-            Console.WriteLine("Getting Html");
-            //var content = "<div class=\"body-text\">\n<p>yasss</p>\n</div>";
-            var content = read.ReadContent();
-            Console.WriteLine(content);
-            Console.WriteLine("\nGetting divs");
-            read.SearchForPost(content);
+            var consoleHandler = new ConsoleHandler();
+            //consoleHandler.ToggleWindow();
+
+            // Will get the content of the site
+            var content = read.ReadContent("https://fest.dk/bitnet.html");
+ 
+            // Will get an array of results
+            var results = read.SearchForPost(content);
+
+            // Will write out the first result
+            Console.WriteLine(results[0]);
+
             Console.ReadLine();
         }
     }

@@ -10,32 +10,50 @@ namespace bitnet
 {
     class ReadTumblr
     {
-        public string ReadContent()
+
+        /// <summary>
+        /// Will get data of a webpage
+        /// </summary>
+        /// <param name="uri">this is the url for the code to get the data of</param>
+        /// <returns>Returns string of html from site</returns>
+        public string ReadContent(string uri)
         {
+            // Will create a web client
             System.Net.WebClient wc = new System.Net.WebClient();
-            byte[] raw = wc.DownloadData("https://www.york.ac.uk/teaching/cws/wws/webpage1.html");
+
+            // Will download the data of the URL
+            byte[] raw = wc.DownloadData(uri);
+
+            // Will create a UTF8 version of the string
             string webData = System.Text.Encoding.UTF8.GetString(raw);
+
+            // Returns value
             return webData;
         }
 
-        public void SearchForPost(string html)
+        /// <summary>
+        /// This will search for a pattern in a given html code!
+        /// </summary>
+        /// <param name="html">This is the raw HTML code</param>
+        /// <returns>Returns array of strings with the content of the matches</returns>
+        public string[] SearchForPost(string html)
         {
+            // Removes all newline types
             var myString = html.Replace("\n", "");
             myString = myString.Replace("\r", "");
             myString = myString.Replace(Environment.NewLine, "");
+
+            // Regex pattern - Will look for div with class body-text and get content until end div
             string pattern = "<div class=\"body-text\">(.*?)<\\/div>";
+
+            // test the new HTML string with the regex pattern
             MatchCollection matches = Regex.Matches(myString, pattern);
-            Console.WriteLine("Matches found: {0}", matches.Count);
 
-            if (matches.Count > 0)
-                foreach (Match m in matches)
-                    Console.WriteLine("{0}", m.Groups[1]);
-        }
+            // Converts results to array of strings
+            var MatchesArray = matches.Cast<Match>().Select(m => m.Value).ToArray();
 
-        public void WriteToConsole(IEnumerable items)
-        {
-            foreach (Match m in items)
-                Console.WriteLine("Inner DIV: {0}", m.Groups[1]);
+            // Returns array of matches
+            return MatchesArray;
         }
     }
 }
